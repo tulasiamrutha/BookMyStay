@@ -52,14 +52,21 @@ class RoomInventory {
     int getAvailability(String roomType) {
         return inventory.getOrDefault(roomType, 0);
     }
+}
 
-    void updateAvailability(String roomType, int count) {
-        inventory.put(roomType, count);
-    }
+class RoomSearchService {
 
-    void displayInventory() {
-        for (Map.Entry<String, Integer> entry : inventory.entrySet()) {
-            System.out.println(entry.getKey() + " Available: " + entry.getValue());
+    void searchAvailableRooms(Room[] rooms, RoomInventory inventory) {
+
+        for (Room room : rooms) {
+
+            int available = inventory.getAvailability(room.roomType);
+
+            if (available > 0) {
+                room.displayRoomDetails();
+                System.out.println("Available Rooms: " + available);
+                System.out.println();
+            }
         }
     }
 }
@@ -72,24 +79,16 @@ public class BookMyStay {
         Room doubleRoom = new DoubleRoom();
         Room suite = new SuiteRoom();
 
+        Room[] rooms = {single, doubleRoom, suite};
+
         RoomInventory inventory = new RoomInventory();
+        RoomSearchService searchService = new RoomSearchService();
 
-        System.out.println("Book My Stay - Hotel Booking System v3.1");
+        System.out.println("Book My Stay - Hotel Booking System v4.0");
+        System.out.println();
+        System.out.println("Available Rooms");
         System.out.println();
 
-        single.displayRoomDetails();
-        System.out.println("Available Rooms: " + inventory.getAvailability("Single Room"));
-        System.out.println();
-
-        doubleRoom.displayRoomDetails();
-        System.out.println("Available Rooms: " + inventory.getAvailability("Double Room"));
-        System.out.println();
-
-        suite.displayRoomDetails();
-        System.out.println("Available Rooms: " + inventory.getAvailability("Suite Room"));
-        System.out.println();
-
-        System.out.println("Current Inventory");
-        inventory.displayInventory();
+        searchService.searchAvailableRooms(rooms, inventory);
     }
 }
